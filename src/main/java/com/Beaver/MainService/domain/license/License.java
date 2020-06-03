@@ -1,6 +1,7 @@
 package com.Beaver.MainService.domain.license;
 
 import com.Beaver.MainService.domain.BaseTimeEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,14 +21,6 @@ public class License extends BaseTimeEntity {
     @Column(length = 20, nullable = false)
     private String code;
 
-    /*
-    @Column(length = 20, nullable = false)
-    private String type;
-
-    @Column(length = 20, nullable = false)
-    private String issued;
-    */
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LicenseType type;
@@ -45,7 +38,17 @@ public class License extends BaseTimeEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime endDate;
 
-    @Column(nullable = false)
+    @Column()
     private String email;
+
+    @Builder
+    public License(String code,
+                   LicenseType type, LicenseProduct product,
+                   int licensePriode) {
+        this.code = code;
+        this.type = type;
+        this.product = product;
+        this.licensePriode = licensePriode;
+    }
 
 }
