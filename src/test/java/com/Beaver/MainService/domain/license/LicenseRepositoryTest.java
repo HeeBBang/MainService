@@ -31,13 +31,13 @@ public class LicenseRepositoryTest {
         String code = "abcdefghijkml";
         LicenseType type = LicenseType.TEST;
         LicenseProduct product = LicenseProduct.BABY_SIGN;
-        int licensePriode = 365;
+        int licensePeriod = 365;
 
         licenseRepository.save(License.builder()
                 .code(code)
                 .type(type)
                 .product(product)
-                .licensePriode(licensePriode)
+                .licensePeriod(licensePeriod)
                 .build());
 
         //when
@@ -47,7 +47,7 @@ public class LicenseRepositoryTest {
         assertThat(license.getCode()).isEqualTo(code);
         assertThat(license.getType()).isEqualTo(type);
         assertThat(license.getProduct()).isEqualTo(product);
-        assertThat(license.getLicensePriode()).isEqualTo(licensePriode);
+        assertThat(license.getLicensePeriod()).isEqualTo(licensePeriod);
     }
 
 

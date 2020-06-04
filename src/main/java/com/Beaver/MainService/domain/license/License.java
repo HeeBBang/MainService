@@ -32,7 +32,7 @@ public class License extends BaseTimeEntity {
     private LicenseProduct product;
 
     @Column(nullable = false)
-    private int licensePriode;
+    private int licensePeriod;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime beginDate;
@@ -46,11 +46,11 @@ public class License extends BaseTimeEntity {
     @Builder
     public License(String code,
                    LicenseType type, LicenseProduct product,
-                   int licensePriode) {
+                   int licensePeriod) {
         this.code = code;
         this.type = type;
         this.product = product;
-        this.licensePriode = licensePriode;
+        this.licensePeriod = licensePeriod;
     }
 
 }

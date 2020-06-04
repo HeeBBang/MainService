@@ -13,14 +13,14 @@ public class LicenseSaveRequestDto {
     private String code;
     private LicenseType type;
     private LicenseProduct product;
-    private int licensePriode;
+    private int licensePeriod;
 
     @Builder
-    public LicenseSaveRequestDto(String code, LicenseType type, LicenseProduct product, int licensePriode) {
+    public LicenseSaveRequestDto(String code, LicenseType type, LicenseProduct product, int licensePeriod) {
         this.code = code;
         this.type = type;
         this.product = product;
-        this.licensePriode = licensePriode;
+        this.licensePeriod = licensePeriod;
     }
 
     public License toEntity() {
@@ -28,7 +28,7 @@ public class LicenseSaveRequestDto {
                 .code(code)
                 .type(type)
                 .product(product)
-                .licensePriode(licensePriode)
+                .licensePeriod(licensePeriod)
                 .build();
     }
 

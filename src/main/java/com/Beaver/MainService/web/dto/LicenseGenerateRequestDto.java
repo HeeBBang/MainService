@@ -15,14 +15,14 @@ public class LicenseGenerateRequestDto {
 
     private LicenseType type;
     private LicenseProduct product;
-    private int licensePriode;
+    private int licensePeriod;
 
     @Builder
-    public LicenseGenerateRequestDto(int generateNumber, LicenseType type, LicenseProduct product, int licensePriode) {
+    public LicenseGenerateRequestDto(int generateNumber, LicenseType type, LicenseProduct product, int licensePeriod) {
         this.generateNumber = generateNumber;
         this.type = type;
         this.product = product;
-        this.licensePriode = licensePriode;
+        this.licensePeriod = licensePeriod;
     }
 
 }

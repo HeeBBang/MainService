@@ -77,7 +77,7 @@ public class LicenseService {
                         .code(buf.toString())
                         .type(requestDto.getType())
                         .product(requestDto.getProduct())
-                        .licensePriode(requestDto.getLicensePriode())
+                        .licensePeriod(requestDto.getLicensePeriod())
                         .build());
                 i++;
             }

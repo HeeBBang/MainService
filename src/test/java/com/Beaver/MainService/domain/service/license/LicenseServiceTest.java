@@ -42,13 +42,13 @@ public class LicenseServiceTest {
         int generateNumber = 10;
         LicenseType licenseType = LicenseType.TEST;
         LicenseProduct licenseProduct = LicenseProduct.BABY_SIGN;
-        int licensePriode = 365;
+        int licensePeriod = 365;
 
         licenseService.generate(LicenseGenerateRequestDto.builder()
                 .generateNumber(generateNumber)
                 .type(licenseType)
                 .product(licenseProduct)
-                .licensePriode(licensePriode).build());
+                .licensePeriod(licensePeriod).build());
 
         //DB에서 다시 꺼내기
         List<License> licenseList = licenseRepository.findAll();
@@ -58,7 +58,7 @@ public class LicenseServiceTest {
                     + " Code = " + license.getCode()
                     + " Type = " + license.getType()
                     + " Product = " + license.getProduct()
-                    + " Priode = " + license.getLicensePriode());
+                    + " Period = " + license.getLicensePeriod());
             assertThat(license.getType()).isEqualTo(LicenseType.TEST);
         }
 
