@@ -48,8 +48,6 @@ public class LicenseRepositoryTest {
         assertThat(license.getType()).isEqualTo(type);
         assertThat(license.getProduct()).isEqualTo(product);
         assertThat(license.getLicensePriode()).isEqualTo(licensePriode);
-
-
     }
 
 

@@ -18,9 +18,11 @@ public class License extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //Coupon Code
     @Column(length = 20, nullable = false)
     private String code;
 
+    //Coupon Type
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LicenseType type;
