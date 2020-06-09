@@ -34,4 +34,9 @@ public class LicenseController {
     public String test() {
         return "aa";
     }
+
+    @PostMapping("/api/v1/license/search")
+    public List<License> search() {
+        return licenseService.getAllData();
+    }
 }
