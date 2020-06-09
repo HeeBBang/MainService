@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum LicenseProduct {
+
     BABY_SIGN("PRODUCT_BABY_SIGN", "베이비 사인"),
     ONLINE("PRODUCT_ONLINE", "온라인 발급");
 

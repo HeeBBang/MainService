@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class LicenseGenerateRequestDto {
 
     private int generateNumber;
-
     private LicenseType type;
     private LicenseProduct product;
     private int licensePeriod;

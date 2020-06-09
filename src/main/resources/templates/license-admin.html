@@ -4,24 +4,67 @@
     <meta charset="UTF-8">
     <title>License Admin</title>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/ax5ui/ax5ui-kernel/master/dist/ax5ui.all.css">
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/ax5ui/ax5ui-kernel/master/dist/ax5ui.all.min.js"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!---
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+     --->
+    <!--indx.js 추가 -->
     <script src="/js/app/index.js"></script>
 
 </head>
 <body>
 <div class="col-md-12">
+
+
+
+    <div class="form-inline" role="form">
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" id="btn-license-generate">라이센스 생산</button>
+
+            <label for="input-generate-count">생성 갯수</label>
+            <input type="number" id="input-generate-count" class="form-control" placeholder="생성 라이센스 갯수" size="5">
+
+            <label for="input-generate-type">라이센스 종류</label>
+            <select id="input-generate-type" class="form-control" name="라이센스 종류">
+                <option value=0>영구</option>
+                <option value=1>1년</option>
+                <option value=2>마케팅</option>
+                <option value=3>테스트</option>
+            </select>
+
+            <label for="input-generate-product">라이센스 제품</label>
+            <select id="input-generate-product" class="form-control" name="라이센스 제품">
+                <option value=0>베이비 사인</option>
+            </select>
+
+            <label for="input-generate-period">라이센스 기간</label>
+            <input type="number" class="form-control" id="input-generate-period">
+        </div>
+     </div>
+            <!---
+        var data = {
+        generateNumber : 10,
+        type : 0,
+        product: 0,
+        licensePeriod : 365
+        };
+        -->
+
     <div class="col-md-6">
-        <button type="button" class="btn btn-primary" id="btn-license-generate">라이센스 생산</button>
         <button type="button" class="btn btn-primary" id="btn-license-search">라이센스 조회</button>
+        <button type="button" class="btn btn-primary" id="btn-license-excel-export">엑셀 다운로드</button>
+        <button type="button" class="btn btn-primary" id="btn-license-delete">라이센스 삭제</button>
     </div>
 
-    <div data-ax5grid="first-grid" data-ax5grid-config="{}" style="width:100%; height:300px;"></div>
-
+    <div id="license-table">
+        <div data-ax5grid="license-grid" data-ax5grid-config="{}" style="width:100%; height:300px;"></div>
+    </div>
 </div>
-
-
 
 </body>
 </html>

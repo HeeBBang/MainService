@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum LicenseType {
+
+
     PERMANENT("LICENSE_PERMANENT", "영구"),
     ONE_YEAR("LICENSE_ONE_YEAR", "1년"),
     MARKETING("LICENSE_MARKETING", "마케팅"),

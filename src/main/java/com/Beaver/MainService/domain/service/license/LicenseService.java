@@ -34,22 +34,22 @@ public class LicenseService {
         return licenseRepository.findAll();
     }
 
-    public Long generate(LicenseGenerateRequestDto requestDto) {
+    public List<License> generate(LicenseGenerateRequestDto requestDto) {
         List<License> licenseList;
 
         licenseList = getAllData();
 
         HashSet<String> duplicateCheckSet = new HashSet<>();
 
-        for(License license : licenseList) {
+        for (License license : licenseList) {
             duplicateCheckSet.add(license.getCode());
         }
 
         int couponSize = requestDto.getGenerateNumber();
 
-        final char[] possibleCharacters = {'1','2','3','4','5','6','7','8','9','0',
-                'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q',
-                'R','S','T','U','V','W','X','Y','Z'};
+        final char[] possibleCharacters = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
+                'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
         final int possibleCharacterCount = possibleCharacters.length;
 
@@ -59,16 +59,14 @@ public class LicenseService {
         Random rnd = new Random();
 
         StringBuilder buf = new StringBuilder(20);
-        for(int i = 0 ; i < couponSize ;)
-        {
+        for (int i = 0; i < couponSize; ) {
             buf.setLength(0);
 
-            for(int j = 0 ; j < 20 ; j++)
-            {
+            for (int j = 0; j < 20; j++) {
                 buf.append(possibleCharacters[rnd.nextInt(possibleCharacterCount)]);
             }
 
-            if(!duplicateCheckSet.contains(buf.toString())) {
+            if (!duplicateCheckSet.contains(buf.toString())) {
 
                 duplicateCheckSet.add(buf.toString());
                 couponList.add(buf.toString());
@@ -83,13 +81,16 @@ public class LicenseService {
             }
         }
 
-        for(License license : generateLicenseList) {
+        for (License license : generateLicenseList) {
             licenseRepository.save(license);
         }
 
-        return 0L;
+        return generateLicenseList;
     }
 
+    @Transactional
+    public void update(Long id, LicenseGenerateRequestDto requestDto) {
 
 
+    }
 }
