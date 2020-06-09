@@ -19,23 +19,23 @@ import java.util.List;
 public class LicenseController {
     private final LicenseService licenseService;
 
-    @PostMapping("/api/v1/license")
+    @PostMapping("/api/admin/v1/license")
     public Long save(@RequestBody LicenseSaveRequestDto requestDto) {
         return licenseService.save(requestDto);
     }
 
     @ResponseBody
-    @PostMapping("/api/v1/license/generate")
+    @PostMapping("/api/admin/v1/license/generate")
     public List<License> generate(@RequestBody LicenseGenerateRequestDto requestDto, Model model) {
         return licenseService.generate(requestDto);
     }
 
-    @PostMapping("/api/v1/license/test")
+    @PostMapping("/api/admin/v1/license/test")
     public String test() {
         return "aa";
     }
 
-    @PostMapping("/api/v1/license/search")
+    @PostMapping("/api/admin/v1/license/search")
     public List<License> search() {
         return licenseService.getAllData();
     }
