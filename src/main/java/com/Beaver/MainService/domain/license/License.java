@@ -22,17 +22,26 @@ public class License extends BaseTimeEntity {
     @Column(length = 20, nullable = false)
     private String code;
 
-    //Coupon Type
+    //License Item
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private LicenseType type;
+    private LicenseItem item;
 
+    //License Product
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LicenseProduct product;
 
+    //License Product
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private LicenseType type;
+
     @Column(nullable = false)
     private int licensePeriod;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime expireDateTime;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime beginDate;
@@ -40,16 +49,17 @@ public class License extends BaseTimeEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime endDate;
 
-    @Column()
-    private String email;
+    @Column
+    private Long userId;
 
     @Builder
     public License(String code,
-                   LicenseType type, LicenseProduct product,
+                   LicenseItem item, LicenseProduct product, LicenseType type,
                    int licensePeriod) {
         this.code = code;
-        this.type = type;
+        this.item = item;
         this.product = product;
+        this.type = type;
         this.licensePeriod = licensePeriod;
     }
 

@@ -83,7 +83,7 @@ var licenseMain = {
         {
             $.ajax({
                 type: 'POST',
-                url: '/api/v1/license/generate',
+                url: '/api/admin/v1/license/generate',
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(data),
@@ -103,7 +103,7 @@ var licenseMain = {
 
         $.ajax({
             type: 'POST',
-            url: '/api/v1/license/search',
+            url: '/api/admin/v1/license/search',
             dataType: 'json',
             //contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data),

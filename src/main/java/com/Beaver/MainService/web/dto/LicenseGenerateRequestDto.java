@@ -1,6 +1,7 @@
 package com.Beaver.MainService.web.dto;
 
 import com.Beaver.MainService.domain.license.License;
+import com.Beaver.MainService.domain.license.LicenseItem;
 import com.Beaver.MainService.domain.license.LicenseProduct;
 import com.Beaver.MainService.domain.license.LicenseType;
 import lombok.Builder;
@@ -12,15 +13,17 @@ import lombok.NoArgsConstructor;
 public class LicenseGenerateRequestDto {
 
     private int generateNumber;
-    private LicenseType type;
+    private LicenseItem item;
     private LicenseProduct product;
+    private LicenseType type;
     private int licensePeriod;
 
     @Builder
-    public LicenseGenerateRequestDto(int generateNumber, LicenseType type, LicenseProduct product, int licensePeriod) {
+    public LicenseGenerateRequestDto(int generateNumber, LicenseItem item, LicenseProduct product, LicenseType type, int licensePeriod) {
         this.generateNumber = generateNumber;
-        this.type = type;
+        this.item = item;
         this.product = product;
+        this.type = type;
         this.licensePeriod = licensePeriod;
     }
 

@@ -58,11 +58,11 @@ public class LicenseService {
 
         Random rnd = new Random();
 
-        StringBuilder buf = new StringBuilder(20);
+        StringBuilder buf = new StringBuilder(10);
         for (int i = 0; i < couponSize; ) {
             buf.setLength(0);
 
-            for (int j = 0; j < 20; j++) {
+            for (int j = 0; j < 10; j++) {
                 buf.append(possibleCharacters[rnd.nextInt(possibleCharacterCount)]);
             }
 
@@ -73,8 +73,9 @@ public class LicenseService {
 
                 generateLicenseList.add(License.builder()
                         .code(buf.toString())
-                        .type(requestDto.getType())
+                        .item(requestDto.getItem())
                         .product(requestDto.getProduct())
+                        .type(requestDto.getType())
                         .licensePeriod(requestDto.getLicensePeriod())
                         .build());
                 i++;

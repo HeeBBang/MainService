@@ -4,6 +4,7 @@ import com.Beaver.MainService.domain.user.Role;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -19,8 +20,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/api/admin/**", "/LicenseAdmin/**").permitAll()
-                    .antMatchers("/api/v1/**").hasRole(Role.USER.name())
+                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/api/admin/**", "/LicenseAdmin/**", "/api/admin/v1/license/**").permitAll()
+                    .antMatchers("/api/v1/admin/abc/**").hasRole(Role.USER.name())
                     .anyRequest().authenticated()
                 .and()
                     .logout()
@@ -29,5 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .oauth2Login()
                         .userInfoEndpoint()
                             .userService(customOAuth2UserService);
+    }
+
+    @Override
+    public void configure(WebSecurity web) {
+        web
+                .ignoring()
+                .antMatchers("/api/admin/v1/license/**");
     }
 }
