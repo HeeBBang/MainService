@@ -29,8 +29,9 @@ public class LicenseRepositoryTest {
     @Test
     public void License_Save_Load() {
         String code = "abcdefghijkml";
-        LicenseType type = LicenseType.TEST;
+        LicenseItem item = LicenseItem.TEST;
         LicenseProduct product = LicenseProduct.BABY_SIGN;
+        LicenseType type = LicenseType.DIGITAL;
         int licensePeriod = 365;
 
         licenseRepository.save(License.builder()

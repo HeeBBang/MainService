@@ -25,7 +25,7 @@ public class GoogleService {
     private String googleClientId;
 
     private String googleRedirect;
-
+/*
     public GoogleProfile getGoogleProfile(String accessToken) {
         HttpHeaders header = new HttpHeaders();
 
@@ -44,5 +44,5 @@ public class GoogleService {
         //throw new
 
     }
-
+*/
 }
