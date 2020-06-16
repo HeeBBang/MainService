@@ -1,10 +1,13 @@
 package com.Beaver.MainService.domain.IntegratedUser;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
+@Getter
+@NoArgsConstructor
+@Entity
 public class IntegratedUser {
 
     @Id

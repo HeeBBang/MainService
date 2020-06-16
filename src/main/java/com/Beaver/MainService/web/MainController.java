@@ -16,4 +16,9 @@ public class MainController {
     public String licenseadmin() {
         return "license-admin";
     }
+
+    @GetMapping("/LoginTest")
+    public static String loginTest() {
+        return "login-test";
+    }
 }

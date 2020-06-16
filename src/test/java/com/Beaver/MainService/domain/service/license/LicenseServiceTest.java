@@ -1,9 +1,6 @@
 package com.Beaver.MainService.domain.service.license;
 
-import com.Beaver.MainService.domain.license.License;
-import com.Beaver.MainService.domain.license.LicenseProduct;
-import com.Beaver.MainService.domain.license.LicenseRepository;
-import com.Beaver.MainService.domain.license.LicenseType;
+import com.Beaver.MainService.domain.license.*;
 import com.Beaver.MainService.web.dto.LicenseGenerateRequestDto;
 
 import org.junit.After;
@@ -40,14 +37,16 @@ public class LicenseServiceTest {
     @Test
     public void License_Generate() {
         int generateNumber = 10;
-        LicenseType licenseType = LicenseType.TEST;
+        LicenseItem licenseItem = LicenseItem.TEST;
         LicenseProduct licenseProduct = LicenseProduct.BABY_SIGN;
+        LicenseType licenseType = LicenseType.DIGITAL;
         int licensePeriod = 365;
 
         licenseService.generate(LicenseGenerateRequestDto.builder()
                 .generateNumber(generateNumber)
-                .type(licenseType)
+                .item(licenseItem)
                 .product(licenseProduct)
+                .type(licenseType)
                 .licensePeriod(licensePeriod).build());
 
         //DB에서 다시 꺼내기
@@ -59,7 +58,7 @@ public class LicenseServiceTest {
                     + " Type = " + license.getType()
                     + " Product = " + license.getProduct()
                     + " Period = " + license.getLicensePeriod());
-            assertThat(license.getType()).isEqualTo(LicenseType.TEST);
+            assertThat(license.getType()).isEqualTo(LicenseType.DIGITAL);
         }
 
     }

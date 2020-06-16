@@ -146,49 +146,69 @@ fieldset, img {
     <title>Login Test Page</title>
     <script type="text/javascript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
     <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 
 <body>
 
-    <div class="inner_login">
-        <div class="login_tistory">
+<div class="inner_login">
+    <div class="login_tistory">
 
-            <form method="post" id="authForm" action="https://www.tistory.com/auth/login">
-                <input type="hidden" name="redirectUrl" value="https://blogpack.tistory.com/manage">
-                <fieldset>
-                    <legend class="screen_out">Login Page</legend>
-                    <div class="box_login">
-                        <div class="inp_text">
-                            <label for="loginId" class="screen_out">id</label>
-                            <input type="email" id="loginId" name="loginId" placeholder="ID" >
-                        </div>
-                        <div class="inp_text">
-                            <label for="loginPw" class="screen_out">Password</label>
-                            <input type="password" id="loginPw" name="password" placeholder="Password" >
-                        </div>
+        <form method="post" id="authForm" action="https://www.tistory.com/auth/login">
+            <input type="hidden" name="redirectUrl" value="https://blogpack.tistory.com/manage">
+            <fieldset>
+                <legend class="screen_out">Login Page</legend>
+                <div class="box_login">
+                    <div class="inp_text">
+                        <label for="loginId" class="screen_out">id</label>
+                        <input type="email" id="loginId" name="loginId" placeholder="ID" >
                     </div>
-                    <button type="submit" class="btn_login"  disabled>Login</button>
+                    <div class="inp_text">
+                        <label for="loginPw" class="screen_out">Password</label>
+                        <input type="password" id="loginPw" name="password" placeholder="Password" >
+                    </div>
+                </div>
+                <button type="submit" class="btn_login"  disabled>Login</button>
 
-                    <a id="kakao-login-btn"></a>
-                    <a href="http://developers.kakao.com/logout"></a>
+                <a id="kakao-login-btn"></a>
+                <a href="https://kauth.kakao.com/oauth/authorize?client_id=90bf788704fe209d897e8ab91eed0b2e&redirect_uri=http://localhost:8080/social/login/kakao&response_type=code"></a>
                     <script type='text/javascript'>
-
-                        Kakao.init('111');
-
+                        Kakao.init('f5af311820464c0a70c02696425953a9');
                         Kakao.Auth.createLoginButton({
                             container: '#kakao-login-btn',
                             success: function (authObj) {
-                                alert(JSON.stringify(authObj));
+
+                                console.log(JSON.stringify(authObj));
+
+                                var data;
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/social/login/kakao',
+                                    dataType: 'json',
+                                    contentType: 'application/json; charset=utf-8',
+                                    data: JSON.stringify(authObj),
+                                    success: function(data) {
+                                        console.log(data);
+                                    }
+                                }).done(
+
+                                ).fail(
+
+                                );
                             },
                             fail: function (err) {
-                                alert(JSON.stringify(err));
-                            }
+                                console.log(JSON.stringify(err));
+                            }   
                         });
+
+
+
 
                     </script>
 
-                    <div id="naverIdLogin"></div>
-                    <script type="text/javascript">
+                <div id="naverIdLogin"></div>
+                <script type="text/javascript">
                         var naverLogin = new naver.LoginWithNaverId(
                             {
                                 clientId: "개발자센터에 등록한 ClientID",
@@ -202,25 +222,25 @@ fieldset, img {
                     </script>
 
 
-                    <div class="login_append">
-                        <div class="inp_chk"> <!-- 체크시 checked 추가 -->
-                            <input type="checkbox" id="keepLogin" class="inp_radio"  name="keepLogin">
-                            <label for="keepLogin" class="lab_g">
-                                <span class="img_top ico_check"></span>
-                                <span class="txt_lab">Login Status</span>
-                            </label>
-                        </div>
-                        <span class="txt_find">
+                <div class="login_append">
+                    <div class="inp_chk"> <!-- 체크시 checked 추가 -->
+                        <input type="checkbox" id="keepLogin" class="inp_radio"  name="keepLogin">
+                        <label for="keepLogin" class="lab_g">
+                            <span class="img_top ico_check"></span>
+                            <span class="txt_lab">Login Status</span>
+                        </label>
+                    </div>
+                    <span class="txt_find">
                     <a href="/member/find/loginId" class="link_find">ID / </a>
                     <a href="/member/find/password" class="link_find">Password Find</a>
                     </span>
-                    </div>
+                </div>
 
-                </fieldset>
-            </form>
+            </fieldset>
+        </form>
 
-        </div>
     </div>
+</div>
 
 </body>
 </html>
