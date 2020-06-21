@@ -21,4 +21,9 @@ public class MainController {
     public static String loginTest() {
         return "login-test";
     }
+
+    @GetMapping("/LoginTest2")
+    public static String loginTest2() {
+        return "login-test2";
+    }
 }

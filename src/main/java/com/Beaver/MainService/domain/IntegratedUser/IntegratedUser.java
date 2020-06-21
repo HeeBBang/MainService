@@ -1,42 +1,56 @@
 package com.Beaver.MainService.domain.IntegratedUser;
 
+import com.Beaver.MainService.config.auth.SocialType;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class IntegratedUser {
+@Table
+public class IntegratedUser implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column
+    @GeneratedValue
+    private Long idx;
 
     @Column
-    private String userId;
-
-    @Column(nullable = false)
-    private String uuid;
-    @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+
+    @Column
+    private String password;
+
+    @Column
     private String email;
 
     @Column
-    private String googleEmail;
-    @Column
-    private String googleName;
+    private String pincipal;
 
     @Column
-    private String naverEmail;
-    @Column
-    private String naverName;
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
 
     @Column
-    private String kakaoEmail;
+    private LocalDateTime createdDate;
+
     @Column
-    private String kakaoName;
+    private LocalDateTime updatedDate;
+
+    @Builder
+    public IntegratedUser(String name, String password, String email, String pincipal, SocialType socialType, LocalDateTime createdDate, LocalDateTime updatedDate) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.pincipal = pincipal;
+        this.socialType = socialType;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+    }
 
 }
