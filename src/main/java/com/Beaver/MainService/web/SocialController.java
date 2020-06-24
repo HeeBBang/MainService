@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@RequiredArgsConstructor
-@Controller
-@RequestMapping("/social/login")
-public class SocialController {
 
+
+@RestController
+public class SocialController {
+    @GetMapping("/kakao")
+    public String kakaoLoginTestPage() {
+        return "kakao-test";
+    }
 
 
 }

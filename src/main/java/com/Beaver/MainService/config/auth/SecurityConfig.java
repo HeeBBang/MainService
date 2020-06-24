@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.Beaver.MainService.config.auth.SocialType.KAKAO;
+
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -33,14 +35,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/api/admin/**", "/LicenseAdmin/**", "/api/admin/v1/license/**", "/LoginTest/**", "/social/login/**", "/LoginTest2/**").permitAll()
                     .antMatchers("/api/v1/admin/abc/**").hasRole(Role.USER.name())
+                    .antMatchers("/kakao").hasAnyAuthority(KAKAO.getRoleType())
                     .anyRequest().authenticated()
                 .and()
                     .logout()
-                        .logoutSuccessUrl("/")
+                        .logoutSuccessUrl("/loginSuccess")
                 .and()
-                    .oauth2Login();
-                        //.userInfoEndpoint()
-                          //  .userService(customOAuth2UserService);
+                    .oauth2Login()
+                    //.successHandler()
+//                    .defaultSuccessUrl("/loginSuccess")
+  //                  .failureUrl("/loginFailure");
+                        .userInfoEndpoint()
+                          .userService(customOAuth2UserService);
     }
 
     @Bean
