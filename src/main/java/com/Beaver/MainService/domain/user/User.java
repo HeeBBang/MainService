@@ -28,12 +28,48 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+    @Column
+    private long kakaoId;
+
+    @Column
+    private String kakaoNickName;
+
+    @Column
+    private long naverId;
+
+    @Column
+    private long googleId;
+
+
+    /*
+    @Column
+    private String
+*/
+
+
+
+
+
+
     @Builder
-    public User(String name, String email, String picture, Role role) {
+    public User(
+            String name,
+            String email,
+            String picture,
+            Role role,
+            long kakaoId,
+            String kakaoNickName,
+            long naverId,
+            long googleId) {
         this.name = name;
         this.email = email;
         this.picture = picture;
         this.role = role;
+        this.kakaoId = kakaoId;
+        this.kakaoNickName = kakaoNickName;
+        this.naverId = naverId;
+        this.googleId = googleId;
+
     }
 
     public User update(String name, String picture) {

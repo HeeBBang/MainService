@@ -42,13 +42,30 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         httpSession.setAttribute("user", new SessionUser(user));
 
-        return new DefaultOAuth2User(Collections.singleton(
-                new SimpleGrantedAuthority(user.getRoleKey())),
+        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());
     }
 
     private User saveOrUpdate(OAuthAttributes attributes) {
+
+        if(attributes.getSocialType().equals(SocialType.KAKAO)) {
+            User user = userRepository.findByKakaoId(attributes.getId())
+                    .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
+                    .orElse(attributes.toEntity());
+        }
+        else if (attributes.getSocialType().equals(SocialType.NAVER)) {
+            User user = userRepository.findByNaverId(attributes.getId())
+                    .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
+                    .orElse(attributes.toEntity());
+        }
+        else if (attributes.getSocialType().equals(SocialType.GOOGLE)) {
+            User user = userRepository.findByGoogleId(attributes.getId())
+                    .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
+                    .orElse(attributes.toEntity());
+        }
+
+
         User user = userRepository
                 .findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
