@@ -15,10 +15,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column//(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column//(nullable = false)
     private String email;
 
     @Column
@@ -29,27 +29,22 @@ public class User {
     private Role role;
 
     @Column
-    private long kakaoId;
+    private String kakaoId;
 
     @Column
     private String kakaoNickName;
 
     @Column
-    private long naverId;
+    private String naverId;
 
     @Column
-    private long googleId;
+    private String naverName;
 
-
-    /*
     @Column
-    private String
-*/
+    private String googleId;
 
-
-
-
-
+    @Column
+    private String googleName;
 
     @Builder
     public User(
@@ -57,10 +52,12 @@ public class User {
             String email,
             String picture,
             Role role,
-            long kakaoId,
+            String kakaoId,
             String kakaoNickName,
-            long naverId,
-            long googleId) {
+            String naverId,
+            String naverName,
+            String googleId,
+            String googleName) {
         this.name = name;
         this.email = email;
         this.picture = picture;
@@ -68,8 +65,17 @@ public class User {
         this.kakaoId = kakaoId;
         this.kakaoNickName = kakaoNickName;
         this.naverId = naverId;
+        this.naverName = naverName;
         this.googleId = googleId;
+        this.googleName = googleName;
 
+    }
+
+    public User kakaoUpdate(String kakaoId, String kakaoNickName) {
+        this.kakaoId = kakaoId;
+        this.kakaoNickName = kakaoNickName;
+        this.role = Role.USER;
+        return this;
     }
 
     public User update(String name, String picture) {

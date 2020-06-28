@@ -13,21 +13,36 @@ import java.util.Map;
 @Getter
 public class OAuthAttributes {
     private Map<String, Object> attributes;
-    private long id;
+    private String id;
     private String nameAttributeKey;
     private String name;
     private String email;
     private String picture;
     private SocialType socialType;
 
+    private String kakaoId;
+    private String kakaoNickName;
+
+    private String naverId;
+    private String naverName;
+
+    private String googleId;
+    private String googleName;
+
     @Builder
     public OAuthAttributes(Map<String, Object> attributes,
                            String nameAttributeKey,
-                           long id,
+                           String id,
                            String name,
                            String email,
                            String picture,
-                           SocialType socialType ) {
+                           SocialType socialType,
+                           String kakaoId,
+                           String kakaoNickName,
+                           String naverId,
+                           String naverName,
+                           String googleId,
+                           String googleName ) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.id = id;
@@ -35,19 +50,28 @@ public class OAuthAttributes {
         this.email = email;
         this.picture = picture;
         this.socialType = socialType;
+
+        this.kakaoId = kakaoId;
+        this.kakaoNickName = kakaoNickName;
+
+        this.naverId = naverId;
+        this.naverName = naverName;
+
+        this.googleId = googleId;
+        this.googleName = googleName;
     }
 
     public static OAuthAttributes of(String registrationId,
                                      String userNameAttributeName,
                                      Map<String, Object> attributes) {
         if("kakao".equals(registrationId)) {
-            ofKakao(userNameAttributeName, attributes);
+            return ofKakao(userNameAttributeName, attributes);
         }
         else if("naver".equals(registrationId)) {
-            ofNaver(userNameAttributeName, attributes);
+            return ofNaver(userNameAttributeName, attributes);
         }
         else if("google".equals(registrationId)) {
-            ofGoogle(userNameAttributeName, attributes);
+            return ofGoogle(userNameAttributeName, attributes);
         }
 
         return ofGoogle(userNameAttributeName, attributes);
@@ -60,8 +84,8 @@ public class OAuthAttributes {
         Map<String, Object> kakaoAccount = ( Map<String, Object> )attributes.get("kakao_account");
 
         return OAuthAttributes.builder()
-                .id((Long) attributes.get("id"))
-                .name((String) properties.get("nickname"))
+                .kakaoId(attributes.get("id").toString())
+                .kakaoNickName(properties.get("nickname").toString())
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .socialType(SocialType.KAKAO)
@@ -72,9 +96,8 @@ public class OAuthAttributes {
                                           Map<String, Object> attributes) {
 
         return OAuthAttributes.builder()
-
-
-
+                .naverId(attributes.get(userNameAttributeName).toString())
+                .naverName(attributes.get("name").toString())
                 .socialType(SocialType.NAVER)
                 .build();
     }
@@ -82,14 +105,33 @@ public class OAuthAttributes {
     public static OAuthAttributes ofGoogle(String userNameAttributeName,
                                            Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-                .name((String) attributes.get("name"))
-                .email((String) attributes.get("email"))
-                .picture((String) attributes.get("picture"))
+                .googleId(attributes.get(userNameAttributeName).toString())
+                .googleName(attributes.get("name").toString())
+                .email(attributes.get("email").toString())
+                .picture(attributes.get("picture").toString())
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .socialType(SocialType.GOOGLE)
                 .build();
     }
+
+
+    public User toKakaoEntity() {
+        return User.builder()
+                .kakaoId(kakaoId)
+                .kakaoNickName(kakaoNickName)
+                .role(Role.GUEST)
+                .build();
+    }
+
+    public User toGoogleEntity() {
+        return User.builder()
+                .googleId(googleId)
+                .googleName(name)
+                .role(Role.GUEST)
+                .build();
+    }
+
 
     public User toEntity() {
         return User.builder()

@@ -49,27 +49,76 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private User saveOrUpdate(OAuthAttributes attributes) {
 
+        User user;
+
         if(attributes.getSocialType().equals(SocialType.KAKAO)) {
-            User user = userRepository.findByKakaoId(attributes.getId())
-                    .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
-                    .orElse(attributes.toEntity());
+            user = userRepository.findByKakaoId(attributes.getKakaoId())
+                    //.map(entity -> entity.update(attributes.getKakaoNickName(), attributes.getPicture()))
+                    .map(entity -> entity.kakaoUpdate(attributes.getKakaoId(), attributes.getKakaoNickName()))
+                    .orElse(attributes.toKakaoEntity());
         }
         else if (attributes.getSocialType().equals(SocialType.NAVER)) {
-            User user = userRepository.findByNaverId(attributes.getId())
+            user = userRepository.findByNaverId(attributes.getNaverId())
                     .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
                     .orElse(attributes.toEntity());
         }
         else if (attributes.getSocialType().equals(SocialType.GOOGLE)) {
-            User user = userRepository.findByGoogleId(attributes.getId())
+            user = userRepository.findByGoogleId(attributes.getGoogleId())
+                    .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
+                    .orElse(attributes.toEntity());
+        }
+        else
+        {
+            user = userRepository
+                    .findByEmail(attributes.getEmail())
                     .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
                     .orElse(attributes.toEntity());
         }
 
 
-        User user = userRepository
-                .findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
-                .orElse(attributes.toEntity());
         return userRepository.save(user);
     }
+
+/*
+    private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
+        OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
+        if(StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
+            throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
+        }
+
+        Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
+        User user;
+        if(userOptional.isPresent()) {
+            user = userOptional.get();
+            if(!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
+                throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
+                        user.getProvider() + " account. Please use your " + user.getProvider() +
+                        " account to login.");
+            }
+            user = updateExistingUser(user, oAuth2UserInfo);
+        } else {
+            user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
+        }
+
+        return UserPrincipal.create(user, oAuth2User.getAttributes());
+    }
+
+    private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
+        User user = new User();
+
+        user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
+        user.setProviderId(oAuth2UserInfo.getId());
+        user.setName(oAuth2UserInfo.getName());
+        user.setEmail(oAuth2UserInfo.getEmail());
+        user.setImageUrl(oAuth2UserInfo.getImageUrl());
+        return userRepository.save(user);
+    }
+
+    private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
+        existingUser.setName(oAuth2UserInfo.getName());
+        existingUser.setImageUrl(oAuth2UserInfo.getImageUrl());
+        return userRepository.save(existingUser);
+    }
+
+ */
 }
