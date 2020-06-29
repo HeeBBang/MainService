@@ -1,5 +1,7 @@
-package com.Beaver.MainService.config.auth;
+package com.Beaver.MainService.config;
 
+import com.Beaver.MainService.config.auth.CustomOAuth2Provider;
+import com.Beaver.MainService.config.auth.CustomOAuth2UserService;
 import com.Beaver.MainService.domain.user.Role;
 import lombok.RequiredArgsConstructor;
 
