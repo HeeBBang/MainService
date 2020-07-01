@@ -1,8 +1,10 @@
 package com.Beaver.MainService.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.graalvm.compiler.lir.CompositeValue;
 
 import javax.persistence.*;
 
@@ -14,6 +16,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
+    private String password;
 
     @Column//(nullable = false)
     private String name;

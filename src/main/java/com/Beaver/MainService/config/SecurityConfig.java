@@ -3,16 +3,26 @@ package com.Beaver.MainService.config;
 import com.Beaver.MainService.config.auth.CustomOAuth2Provider;
 import com.Beaver.MainService.config.auth.CustomOAuth2UserService;
 import com.Beaver.MainService.domain.user.Role;
+import com.Beaver.MainService.security.oauth2.CustomUserDetailsService;
+import com.Beaver.MainService.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.Beaver.MainService.security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.Beaver.MainService.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
@@ -27,7 +37,44 @@ import static com.Beaver.MainService.config.auth.SocialType.KAKAO;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final CustomUserDetailsService customUserDetailsService;
+
     private final CustomOAuth2UserService customOAuth2UserService;
+
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+
+
+    /*
+    By default, Spring OAuth2 uses HttpSessionOAuth2AuthorizationRequestRepository to save
+    the authorization request. But, since our service is stateless, we can't save it in
+    the session. We'll save the request in a Base64 encoded cookie instead.
+    */
+    @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder
+                .userDetailsService(customUserDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean(BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -35,8 +82,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .headers().frameOptions().disable()
                 .and()
+                    .sessionManagement()
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                     .authorizeRequests()
-                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/api/admin/**", "/LicenseAdmin/**", "/api/admin/v1/license/**", "/LoginTest/**", "/social/login/**", "/LoginTest2/**").permitAll()
+                    .antMatchers("/"
+                            , "/css/**"
+                            , "/images/**"
+                            , "/js/**"
+                            , "/h2-console/**"
+                            , "/api/admin/**"
+                            , "/LicenseAdmin/**"
+                            , "/api/admin/v1/license/**"
+                            , "/LoginTest/**"
+                            , "/social/login/**"
+                            , "/LoginTest2/**")
+                            .permitAll()
+                    .antMatchers("/auth/**", "/oauth2/**")
+                            .permitAll()
                     .antMatchers("/api/v1/admin/abc/**").hasRole(Role.USER.name())
                     .antMatchers("/kakao").hasAnyAuthority(KAKAO.getRoleType())
                     .anyRequest().authenticated()
@@ -45,11 +108,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .logoutSuccessUrl("/loginSuccess")
                 .and()
                     .oauth2Login()
-                    //.successHandler()
-//                    .defaultSuccessUrl("/loginSuccess")
-  //                  .failureUrl("/loginFailure");
+                        .authorizationEndpoint()
+                            //.baseUri("/oauth2/authorize")
+                            .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                            .and()
+                        .redirectionEndpoint()
+                            //.baseUri("/oauth2/callback/*")
+                            .and()
                         .userInfoEndpoint()
-                          .userService(customOAuth2UserService);
+                            .userService(customOAuth2UserService)
+                            .and()
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
+                        .failureHandler(oAuth2AuthenticationFailureHandler);
     }
 
     @Bean

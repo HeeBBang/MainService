@@ -1,13 +1,18 @@
 package com.Beaver.MainService.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import java.util.*;
+
 
 @Service
 public class JwtTokenProvider {
@@ -28,12 +33,24 @@ public class JwtTokenProvider {
         this.authorizedRedirectUris.add("myiosapp://oauth2/redirect");
     }
 
-    public String createToken() {
+    public String createToken(Authentication authentication) {
+
+
+        OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken)authentication;
+
+        //aa.getPrincipal().getAttribute("id");
+        //oAuth2AuthenticationToken.getPrincipal().getAttribute("id").toString();
+
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + tokenExpirationMsec);
 
-        return null;
+        return Jwts.builder()
+                .setSubject(oAuth2AuthenticationToken.getPrincipal().getAttribute("id").toString())
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, TokenSecret)
+                .compact();
     }
 
     public Long getUserIdFromToken(String token) {
