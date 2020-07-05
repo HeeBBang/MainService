@@ -11,6 +11,14 @@
 <a href="javascript:;" class="btn_social" data-social="kakao">카카오톡 로그인</a><br/>
 <a href="javascript:;" class="btn_social" data-social="naver">네이버 로그인</a><br/>
 
+<h2>로그인2</h2><br/><br/>
+<a href="javascript:;" class="btn_social2" data-social="facebook">페이스북 로그인</a><br/>
+<a href="javascript:;" class="btn_social2" data-social="google">구글 로그인</a><br/>
+<a href="javascript:;" class="btn_social2" data-social="kakao">카카오톡 로그인</a><br/>
+<a href="javascript:;" class="btn_social2" data-social="naver">네이버 로그인</a><br/>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
 <script>
         let socials = document.getElementsByClassName("btn_social");
         for(let social of socials) {
@@ -19,6 +27,45 @@
                 location.href="/oauth2/authorization/" + socialType;
             })
         }
+        
+        let socials2 = document.getElementsByClassName("btn_social2");
+        for(let social2 of socials2) {
+            social2.addEventListener('click', function(event){
+                var params = "email=" + $('#email').val() + "&password=" + $('#password').val()
+                let socialType2 = this.getAttribute('data-social');
+
+                $.ajax({
+                    url : "/oauth2/authorization/" + socialType2,
+                    type : "get",
+                    dataType : "text",
+                    //data : params,
+
+                    
+                    success : function(response) {
+                        console.log(response);
+                    }, 
+                    error : function(jqXHR, status, e) 
+                    {
+                        console.error(status + " : " + e);
+                    }
+                    ,
+                    complete : function() {
+                        console.log("comeplete");
+                    }
+
+                    /*
+                    success : function(response) {
+                        console.log(response);
+                    }, error : function(jqXHR, status, e) {
+                        console.error(status + " : " + e);
+                    }
+                    */
+
+
+                });
+            });
+        };
+
     </script>
 </body>
 </html>
