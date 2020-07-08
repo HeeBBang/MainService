@@ -17,8 +17,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class LicenseServiceTest {
 
     @Autowired
@@ -34,7 +34,7 @@ public class LicenseServiceTest {
 
     }
 
-    @Test
+   // @Test
     public void License_Generate() {
         int generateNumber = 10;
         LicenseItem licenseItem = LicenseItem.TEST;
