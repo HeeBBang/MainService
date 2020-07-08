@@ -25,7 +25,7 @@ public class LicenseRepositoryTest {
     public void cleanup() {
         licenseRepository.deleteAll();
     }
-
+/*
     @Test
     public void License_Save_Load() {
         String code = "abcdefghijkml";
@@ -50,7 +50,7 @@ public class LicenseRepositoryTest {
         assertThat(license.getProduct()).isEqualTo(product);
         assertThat(license.getLicensePeriod()).isEqualTo(licensePeriod);
     }
-
+*/
 
 
 }
