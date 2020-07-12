@@ -1,5 +1,6 @@
 package com.Beaver.MainService.security;
 
+import com.Beaver.MainService.config.auth.SocialType;
 import com.Beaver.MainService.domain.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 public class UserPrincipal implements OAuth2User, UserDetails {
     private Long id;
+    private SocialType socialType;
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;

@@ -3,6 +3,8 @@ package com.Beaver.MainService.config;
 import com.Beaver.MainService.config.auth.CustomOAuth2Provider;
 import com.Beaver.MainService.config.auth.CustomOAuth2UserService;
 import com.Beaver.MainService.domain.user.Role;
+import com.Beaver.MainService.security.JwtTokenAuthenticationFilter;
+import com.Beaver.MainService.security.JwtTokenProvider;
 import com.Beaver.MainService.security.oauth2.CustomUserDetailsService;
 import com.Beaver.MainService.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.Beaver.MainService.security.oauth2.OAuth2AuthenticationFailureHandler;
@@ -26,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.List;
 import java.util.Objects;
@@ -47,6 +50,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
+    @Bean
+    public JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter() {
+        return new JwtTokenAuthenticationFilter();
+    }
 
     /*
     By default, Spring OAuth2 uses HttpSessionOAuth2AuthorizationRequestRepository to save
@@ -119,6 +126,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             .and()
                         .successHandler(oAuth2AuthenticationSuccessHandler)
                         .failureHandler(oAuth2AuthenticationFailureHandler);
+
+
+        http.addFilterBefore(jwtTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

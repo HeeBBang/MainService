@@ -19,5 +19,11 @@ public class SocialController {
         return "kakao-test";
     }
 
+    @GetMapping("/user")
+    public String userInfo() {
+
+        return "aa";
+    }
+
 
 }

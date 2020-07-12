@@ -38,4 +38,37 @@ public class CustomUserDetailsService implements UserDetailsService {
         return UserPrincipal.create(user);
     }
 
+    @Transactional
+    public UserDetails loadUserByIdProvider(Long id, String provider) {
+
+        User user;
+
+        if(provider.equals("kakao")) {
+            user = userRepository.findByKakaoId(id.toString()).orElseThrow(
+                    () -> new ResourceNotFoundException("User", "id", id)
+            );
+        }
+        else if( provider.equals("naver")) {
+            user = userRepository.findByNaverId(id.toString()).orElseThrow(
+                    () -> new ResourceNotFoundException("User", "id", id)
+            );
+        }
+        else if(provider.equals("google")) {
+            user = userRepository.findByGoogleId(id.toString()).orElseThrow(
+                    () -> new ResourceNotFoundException("User", "id", id)
+            );
+        }
+        else {
+            user = userRepository.findById(id).orElseThrow(
+                    () -> new ResourceNotFoundException("User", "id", id)
+            );
+        }
+
+
+
+
+        return UserPrincipal.create(user);
+    }
+
+
 }

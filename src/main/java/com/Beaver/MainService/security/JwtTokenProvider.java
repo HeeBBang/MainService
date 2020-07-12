@@ -42,11 +42,20 @@ public class JwtTokenProvider {
         //oAuth2AuthenticationToken.getPrincipal().getAttribute("id").toString();
 
 
+
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + tokenExpirationMsec);
 
+        String provider = "";
+
+        if(oAuth2AuthenticationToken.getPrincipal().getAttributes().get("kakao_account") != null)
+        {
+            provider = "kakao";
+        }
+
         return Jwts.builder()
                 .setSubject(oAuth2AuthenticationToken.getPrincipal().getAttribute("id").toString())
+                .setAudience(provider)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, TokenSecret)
